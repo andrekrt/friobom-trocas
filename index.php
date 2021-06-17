@@ -276,11 +276,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                                             $total = 0;
                                                             foreach($comprado as $compra){
                                                             
-                                                                $valor =  str_replace(",", ".",$compra['PVENDA']);
+                                                                $valor =  str_replace(".", "",$compra['PVENDA']);
+                                                                $valor = str_replace(",",".",$valor);
+
+                                                                $qtd = str_replace(",",".",$compra['QT']);
 
                                                             // echo $compra['QT']. "x" .$valor. "<BR>";
 
-                                                                $totalInd = $compra['QT']*$valor;
+                                                                $totalInd = $qtd*$valor;
                                                                 $total = $total + $totalInd;
                                                             }
 
@@ -298,9 +301,11 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
 
                                                                 $valor =  str_replace(",", ".",$troca['PVENDA']);
 
+                                                                $qtd = $troca['QT'];
+
                                                                 //echo $troca['QT']. " x " .$valor. "<BR>";
 
-                                                                $totalInd = $troca['QT']*$valor;
+                                                                $totalInd = $qtd*$valor;
                                                                 $totalTrocado = $totalTrocado + $totalInd;
                                                             }
 
@@ -309,11 +314,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                                             $verificaTv1->execute();
                                                             $qtdTv1 = count($verificaTv1->fetchAll());
                                                             $tv1;
+                                                             
                                                             if($qtdTv1>0){
                                                                 $tv1 = "SIM";
                                                             }else{
                                                                 $tv1 = "NÃO";
                                                             }
+
+
                                                         
                                                         ?>
                                                         <div class="form-row">
@@ -321,17 +329,23 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                                                 <label class="col-form-label" for="fornecedor">Fornecedor</label>
                                                                 <input type="text" readonly name="fornecedor" class="form-control" id="fornecedor" value="<?=$dado['fornecedor']; ?>">
                                                             </div>
-                                                            <div class="form-group col-md-3">
+                                                            <div class="form-group col-md-5">
                                                                 <label class="col-form-label" for="vlComprado">Valor Comprado no último ano</label>
                                                                 <input type="text" readonly name="vlComprado" class="form-control" id="vlComprado" value="<?php echo "R$ " .number_format($total, 2, ",", ".") ; ?>">
                                                             </div>
-                                                            <div class="form-group col-md-3">
+                                                            <div class="form-group col-md-5">
                                                                 <label class="col-form-label" for="vlTrocado">Valor Trocado no último ano</label>
                                                                 <input type="text" readonly name="vlTrocado" class="form-control" id="vlTrocado" value="<?php echo "R$ " .number_format($totalTrocado, 2, ",", ".") ; ?>">
                                                             </div>
+                                                        </div>
+                                                        <div class="form-row">
                                                             <div class="form-group col-md-2">
                                                                 <label class="col-form-label" for="fornecedor">% Troca</label>
-                                                                <input type="text" readonly name="fornecedor" class="form-control" id="fornecedor" value="<?= number_format(($totalTrocado/$total)*100,2,",", "."). "%" ; ?>">
+                                                                <input type="text" readonly name="fornecedor" class="form-control" id="fornecedor" value="<?=($total==0)?0:number_format(($totalTrocado/$total)*100, 2,",", "."). "%" ; ?>">
+                                                            </div>
+                                                            <div class="form-group col-md-3">
+                                                                <label class="col-form-label" for="trocaFutura">% Troca Futura</label>
+                                                                <input type="text" readonly name="trocaFutura" class="form-control" id="trocaFutura" value="<?=($total==0)?0:number_format((($totalTrocado+$dado['valor_atend'])/$total)*100, 2,",", "."). "%" ; ?>">
                                                             </div>
                                                             <div class="form-group col-md-2">
                                                                 <label class="col-form-label" for="fornecedor">TV1 Liberado</label>
@@ -453,7 +467,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         <li class="page-item">
                         <?php
                             if($paginaAnterior!=0){
-                                echo "<a class='page-link' href='trocas.php?pagina=$paginaAnterior' aria-label='Anterior'>
+                                echo "<a class='page-link' href='index.php?pagina=$paginaAnterior' aria-label='Anterior'>
                                 <span aria-hidden='true'>&laquo;</span>
                                 <span class='sr-only'>Anterior</span>
                             </a>";
@@ -468,13 +482,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </li>
                         <?php
                             for($i=1;$i < $numPaginas+1;$i++){
-                                echo "<li class='page-item'><a class='page-link' href='trocas.php?pagina=$i'>$i</a></li>";
+                                echo "<li class='page-item'><a class='page-link' href='index.php?pagina=$i'>$i</a></li>";
                             }
                         ?>
                         <li class="page-item">
                         <?php
                             if($paginaPosterior <= $numPaginas){
-                                echo " <a class='page-link' href='trocas.php?pagina=$paginaPosterior' aria-label='Próximo'>
+                                echo " <a class='page-link' href='index.php?pagina=$paginaPosterior' aria-label='Próximo'>
                                 <span aria-hidden='true'>&raquo;</span>
                                 <span class='sr-only'>Próximo</span>
                             </a>";
