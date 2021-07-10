@@ -88,6 +88,10 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
         <meta name="msapplication-TileColor" content="#da532c">
         <meta name="theme-color" content="#ffffff">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     </head>
     <body>
         <div class="container-fluid corpo">
@@ -133,16 +137,16 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                     <div class="filtro">
                         <form action="" class="form-inline" method="post">
                             <div class="form-row">
-                                <select name="cliente" id="" class="form-control">
+                                <select name="cliente" id="cliente" class="form-control">
                                     <option value=""></option>
                                     <?php
-                                    $filtro = $db->query("SELECT cod_cliente FROM troca");
+                                    $filtro = $db->query("SELECT cod_cliente, fantasia FROM troca");
                                     if ($filtro->rowCount() > 0) {
                                         $dados = $filtro->fetchAll();
                                         foreach ($dados as $dado) {
 
                                     ?>
-                                            <option value="<?php echo $dado['cod_cliente'] ?>"> <?php echo $dado['cod_cliente'] ?> </option>
+                                            <option value="<?php echo $dado['cod_cliente'] ?>"> <?php echo $dado['cod_cliente'] . " - " . utf8_encode($dado['fantasia'])  ?> </option>
                                     <?php
 
                                         }
@@ -301,7 +305,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
 
                                                                 $valor =  str_replace(",", ".",$troca['PVENDA']);
 
-                                                                $qtd = $troca['QT'];
+                                                                $qtd = str_replace(",",".",$troca['QT']) ;
 
                                                                 //echo $troca['QT']. " x " .$valor. "<BR>";
 
@@ -505,8 +509,13 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                 </nav>
             </div>
         </div>
-        <script src="assets/js/jquery.js"></script>
+
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/menu.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#cliente').select2();
+            });
+        </script>
     </body>
 </html>
