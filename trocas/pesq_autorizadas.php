@@ -31,7 +31,7 @@ if($searchValue != ''){
 }
 
 ## Total number of records without filtering
-$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM troca WHERE analise_apoio = 'Autorizado' AND POSICAO = 'B'");
+$stmt = $db->prepare("SELECT COUNT(*) AS allcount FROM troca WHERE analise_apoio = 'Autorizado' AND POSICAO = 'B'S");
 $stmt->execute();
 $records = $stmt->fetch();
 $totalRecords = $records['allcount'];
