@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require("conexao.php");
+require("../conexao.php");
 
 if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
 
@@ -20,7 +20,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $atualiza->execute();
         if($atualiza){
             echo "<script>alert('Troca Autorizada!');</script>";
-            echo "<script>window.location.href='index.php'</script>";
+            echo "<script>window.location.href='../index.php'</script>";
         }else{
             print_r($db->errorInfo());
         }
@@ -32,7 +32,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         $atualiza->execute();
         if($atualiza){
             echo "<script>alert('Troca Liberada!');</script>";
-            echo "<script>window.location.href='index.php'</script>";
+            echo "<script>window.location.href='trocas.php'</script>";
         }else{
             print_r($db->errorInfo());
         }

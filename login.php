@@ -18,6 +18,7 @@ if(isset($_POST['login']) && isset($_POST['senha'])){
 
         $_SESSION['idUsuario'] = $dado['idusuario'];
         $_SESSION['tipoUsuario'] = $dado['tipo_usuario_idtipo_usuario'];
+        $_SESSION['nomeUsuario'] = $dado['nome_usuario'];
         header("Location:index.php");
 
     }else{
