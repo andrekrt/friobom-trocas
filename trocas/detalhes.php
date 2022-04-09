@@ -208,7 +208,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             }
                             if($tipoUsuario==3 || $tipoUsuario==99) {
                         ?>
-                        <div class="form-row">
+                        <div class="form-row" id="ultimaLinha">
                             <div class="form-group col-md-4"> 
                                 <label for="analiseApoio" class="col-form-abel">Análise Apoio</label>
                                 <select class="form-control" name="analiseApoio" id="analiseApoio">
@@ -217,6 +217,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                                     <option value="Recusado">Recusado</option>
                                 </select>
                             </div>
+                            
                         
                             <?php
                             if($qtdTv1<1):
@@ -229,7 +230,7 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                         </div>
                         <?php
 
-                            }elseif($tipoUsuario==2 && $dado['analise_apoio']=="Autorizado"){
+                            }elseif($tipoUsuario==2 && ($dado['analise_apoio']=="Autorizado" || $dado['analise_apoio']=="Recusado")){
 
                         ?>
                         <div class="form-row">
@@ -239,6 +240,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
                             <div class="form-group col-md-4">
                                 <label for="autorizacao" class="col-form-abel">Autorizado por:</label>
                                 <input type="text" value="<?=$dado['autorizado'];?>"  readonly class="form-control" required name="autorizacao" id="autorizacao">
+                            </div> 
+                            <?php
+                            }
+                            if(!empty($dado['recusa'])){
+                            ?>
+                            <div class="form-group col-md-4">
+                                <label for="recusa" class="col-form-abel">Motivo de Recusa</label>
+                                <input type="text" value="<?=$dado['recusa'];?>"  readonly class="form-control" required name="recusa" id="recusa">
                             </div> 
                             <?php
                             }
@@ -273,5 +282,14 @@ if(isset($_SESSION['idUsuario']) && empty($_SESSION['idUsuario'])==false){
         <script src="../assets/js/jquery.js"></script>
         <script src="../assets/js/bootstrap.bundle.min.js"></script>
         <script src="../assets/js/menu.js"></script> 
+        <script>
+            $("select[name='analiseApoio']").change(function(){
+                var analise = $(this).val();
+                if(analise=='Recusado'){
+                    $('#ultimaLinha').append('<div class="form-group col-md-4"> <label for="recusa" class="col-form-abel">Motivo de Recusa</label> <input required type="text" name="recusa" id="recusa" class="form-control"> </div>');
+                    
+                }
+            });
+        </script>
     </body>
 </html>
